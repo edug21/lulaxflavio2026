@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lulaxflavio2026.vercel.app/sitemap.xml

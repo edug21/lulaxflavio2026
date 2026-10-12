@@ -1,7 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lula × Flávio 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<meta name="description" content="Lula e Flávio Bolsonaro lado a lado: propostas, efeitos, trajetórias, escândalos e indicadores, com a fonte de cada informação.">
+<link rel="canonical" href="https://lulaxflavio2026.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Lula × Flávio 2026">
+<meta property="og:url" content="https://lulaxflavio2026.vercel.app/">
+<meta property="og:title" content="Lula × Flávio 2026: os dois lado a lado">
+<meta property="og:description" content="Os dois candidatos do 2º turno lado a lado, tema por tema, com fonte em cada informação.">
+<meta property="og:image" content="https://lulaxflavio2026.vercel.app/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Retratos de Lula e Flávio Bolsonaro lado a lado, com o título Lula × Flávio 2026">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lula × Flávio 2026: os dois lado a lado">
+<meta name="twitter:description" content="Os dois candidatos do 2º turno lado a lado, tema por tema, com fonte em cada informação.">
+<meta name="twitter:image" content="https://lulaxflavio2026.vercel.app/og.jpg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0f1312">
+<link rel="preload" href="fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/public-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-stretch:62% 125%;font-display:swap;src:url(fonts/archivo-latin-wdth-normal.woff2) format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-stretch:62% 125%;font-display:swap;src:url(fonts/archivo-latin-ext-wdth-normal.woff2) format('woff2-variations');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/public-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Public Sans';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/public-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/public-sans-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/public-sans-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/public-sans-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+</style>
+<!-- Vercel Web Analytics (só funciona com o site hospedado na Vercel e Web Analytics ativado no painel) -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
 <style>
 /* Layout: ficha comparativa — hero com a foto dividida, barra fixa com as duas colunas, cada tema em par lado a lado */
 :root{
@@ -438,7 +481,7 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
   <h1 id="hero-title" class="sr-only">Lula × Flávio Bolsonaro: comparativo do 2º turno de 2026</h1>
   <div class="faces">
     <div class="face face-l" tabindex="0" aria-label="Lula, PT. 45,16% dos votos válidos no 1º turno">
-      <img src="lula.jpg" alt="" width="1092" height="1232">
+      <picture><source srcset="lula.webp" type="image/webp"><img src="lula.jpg" alt="" width="1092" height="1232"></picture>
       <div class="face-txt">
         <span class="role">PT · vice Geraldo Alckmin</span>
         <span class="fname">Lula</span>
@@ -447,7 +490,7 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
     </div>
     <div class="vs" aria-hidden="true">×</div>
     <div class="face face-f" tabindex="0" aria-label="Flávio Bolsonaro, PL. 47,03% dos votos válidos no 1º turno">
-      <img src="flavio.jpg" alt="" width="1092" height="1232">
+      <picture><source srcset="flavio.webp" type="image/webp"><img src="flavio.jpg" alt="" width="1092" height="1232"></picture>
       <div class="face-txt">
         <span class="role">PL · vice Alfredo Gaspar</span>
         <span class="fname">Flávio</span>
@@ -654,3 +697,6 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
   list.forEach(function(el){io.observe(el)});
 })();
 </script>
+
+</body>
+</html>

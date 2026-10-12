@@ -513,7 +513,11 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
   /* Hospedado fora do claude.ai (GitHub Pages etc.): o link compartilhado é o endereço atual */
   var hosted = location.protocol === 'https:' && !/claude|anthropic|usercontent/.test(location.hostname);
   var URL_SITE = hosted ? location.origin + location.pathname : ARTIFACT_URL;
-  function track(rede){ try{ if(window.goatcounter && goatcounter.count) goatcounter.count({path:'compartilhar', title:rede, event:true}); window.dispatchEvent(new CustomEvent('lf-share')); }catch(_){} }
+  function track(rede){ try{
+    if(window.goatcounter && goatcounter.count) goatcounter.count({path:'compartilhar', title:rede, event:true});
+    if(typeof window.va === 'function') window.va('event', {name:'Compartilhar', data:{rede:rede}}); /* Vercel Analytics */
+    window.dispatchEvent(new CustomEvent('lf-share'));
+  }catch(_){} }
   var MSG = 'Lula × Flávio 2026: propostas, trajetórias e dados dos dois candidatos lado a lado, com fonte em cada informação.';
   var POST = 'Vai votar no 2º turno em 25/10?\n\nEste site compara Lula e Flávio Bolsonaro lado a lado: propostas, o que cada uma exige do Congresso, efeitos para trabalhadores e empresas, trajetória e indicadores. Cada informação tem a fonte.\n\nConfira e tire suas conclusões: ' + URL_SITE + '\n\n#Eleições2026 #SegundoTurno';
   var $ = function(id){return document.getElementById(id)};

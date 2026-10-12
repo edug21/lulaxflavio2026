@@ -312,6 +312,26 @@ html,body{overflow-x:clip}
 .share-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:22;background:var(--ink);color:var(--paper);
   padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600}
 @media (max-width:480px){.share-fab span{display:none}.share-fab{padding:14px}}
+/* Interações do painel de compartilhar */
+.share-fab{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+.share-fab:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.28)}
+.share-fab:active{transform:translateY(0) scale(.97);box-shadow:0 4px 12px rgba(0,0,0,.22)}
+.share-fab[aria-expanded="true"]{background:color-mix(in srgb,var(--ink) 82%,var(--lula))}
+.share-close,.share-btn,.share-nets a{transition:background-color .18s ease,color .18s ease,transform .12s ease,box-shadow .18s ease}
+.share-close:hover{background:var(--ink);color:var(--paper)}
+.share-close:active{transform:scale(.92)}
+.share-close:focus-visible,.share-btn:focus-visible,.share-nets a:focus-visible{outline:2px solid var(--lula);outline-offset:2px}
+.share-btn:hover{background:color-mix(in srgb,var(--ink) 82%,var(--lula));box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.share-btn:active{transform:scale(.97);box-shadow:none}
+.share-btn.done{background:var(--ok);color:var(--card)}
+.share-btn .ok-ic{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:-2px}
+.share-nets a:focus-visible{background:var(--ink);color:var(--paper)}
+.share-nets a:active{transform:scale(.96)}
+.share-row input,.share-panel textarea{transition:border-color .18s ease,box-shadow .18s ease}
+.share-row input:hover,.share-panel textarea:hover{border-color:var(--muted)}
+.share-row input:focus,.share-panel textarea:focus{outline:none;border-color:var(--lula);box-shadow:0 0 0 3px color-mix(in srgb,var(--lula) 22%,transparent)}
+@media (prefers-reduced-motion:reduce){.share-fab,.share-close,.share-btn,.share-nets a{transition:none}.share-fab:hover,.share-fab:active,.share-close:active,.share-btn:active,.share-nets a:active{transform:none}}
+
 
 /* ===== Topo novo ===== */
 .share-panel[hidden],.share-toast[hidden]{display:none}
@@ -620,19 +640,25 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
   $('share-nets').addEventListener('click',function(ev){var a=ev.target.closest('a[data-rede]'); if(a) track(a.getAttribute('data-rede'))});
   var tt;
   function say(m){toast.textContent=m;toast.hidden=false;clearTimeout(tt);tt=setTimeout(function(){toast.hidden=true},2600)}
-  function copy(el,okMsg){
+  function flash(btn){
+    if(!btn) return; if(!btn.dataset.label) btn.dataset.label=btn.textContent;
+    btn.classList.add('done');
+    btn.innerHTML='<svg class="ok-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Copiado';
+    clearTimeout(btn._t); btn._t=setTimeout(function(){btn.classList.remove('done');btn.textContent=btn.dataset.label},1800);
+  }
+  function copy(el,okMsg,btn){
     var v=el.value;
     function fallback(){el.focus();el.select();say('Texto selecionado: use Ctrl+C ou "Copiar" para copiar')}
     try{
-      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(function(){say(okMsg)},fallback)}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(function(){say(okMsg);flash(btn)},fallback)}
       else fallback();
     }catch(_){fallback()}
   }
   function setOpen(o){panel.hidden=!o;openBtn.setAttribute('aria-expanded',o?'true':'false');if(o){$('share-copy-link').focus()}else{openBtn.focus()}}
   openBtn.addEventListener('click',function(){setOpen(panel.hidden)});
   $('share-close').addEventListener('click',function(){setOpen(false)});
-  $('share-copy-link').addEventListener('click',function(){copy(linkIn,'Link copiado');track('Copiar link')});
-  $('share-copy-post').addEventListener('click',function(){copy(post,'Texto copiado');track('Copiar texto')});
+  $('share-copy-link').addEventListener('click',function(){copy(linkIn,'Link copiado',this);track('Copiar link')});
+  $('share-copy-post').addEventListener('click',function(){copy(post,'Texto copiado',this);track('Copiar texto')});
 
   /* Botão "copiar link" em cada tema */
   var ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>';

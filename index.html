@@ -512,14 +512,14 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
 .hero-pills{display:inline-flex;flex-wrap:wrap;gap:8px;align-items:center}
 .stats{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.02em;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--hero-muted);display:inline-flex;gap:14px}
 .stats b{color:var(--hero-fg);font-weight:500;font-variant-numeric:tabular-nums}
-.share-count{font-size:12.5px;color:var(--muted);margin:0}
+.share-count{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin:4px 0 0}
 </style>
 
 <a class="skip" href="#disputa">Pular para o conteúdo</a>
 <header class="hero2" aria-labelledby="hero-title">
   <div class="hero-top wrap">
     <span class="hk">Eleição presidencial 2026 · 2º turno</span>
-    <span class="hero-pills"><span class="stats" id="stats" hidden><span><b id="st-visits">–</b> visitas</span><span><b id="st-shares">–</b> compartilhamentos</span></span><span class="countdown" id="countdown">2º turno em 25 de outubro</span></span>
+    <span class="hero-pills"><span class="stats" id="stats" hidden><span id="st-visits-box" hidden><b id="st-visits">–</b> visitas</span><span><b id="st-shares">–</b> compartilhamentos</span></span><span class="countdown" id="countdown">2º turno em 25 de outubro</span></span>
   </div>
   <h1 id="hero-title" class="sr-only">Lula × Flávio Bolsonaro: comparativo do 2º turno de 2026</h1>
   <div class="faces">
@@ -566,36 +566,50 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
 <footer class="wrap">Conteúdo baseado no relatório "Relatório comparativo: governos, indicadores, propostas e trajetórias de Lula e Flávio Bolsonaro", com data de corte em 8/10/2026. A página descreve fatos e propostas; não indica voto nem atribui causalidade aos indicadores.</footer>
 
 <script>
-/* ===== Contadores de visitas e compartilhamentos (GoatCounter) =====
-   Troque SEU-CODIGO pelo código da sua conta em goatcounter.com
-   (ex.: se o painel é https://lulaflavio.goatcounter.com, o código é lulaflavio).
-   Fora do GitHub Pages (por exemplo, dentro do claude.ai) nada é carregado. */
+/* ===== Contadores =====
+   Compartilhamentos: contador público Abacus (abacus.jasoncameron.dev), sem cadastro.
+   Visitas: GoatCounter. Troque SEU-CODIGO pelo código da sua conta em goatcounter.com
+   (ex.: se o painel é https://lulaflavio.goatcounter.com, o código é lulaflavio); sem código, as visitas não aparecem.
+   Fora do site publicado (por exemplo, dentro do claude.ai) nada é carregado. */
 (function(){
   var GOATCOUNTER = 'SEU-CODIGO';
+  var SHARE_URL = 'https://abacus.jasoncameron.dev';
+  var SHARE_KEY = 'lulaxflavio2026/compartilhamentos';
   var hosted = location.protocol === 'https:' && !/claude|anthropic|usercontent/.test(location.hostname);
-  if (!hosted || !GOATCOUNTER || GOATCOUNTER === 'SEU-CODIGO') return;
+  if (!hosted) return;
+
+  var fmt = new Intl.NumberFormat('pt-BR');
+  var $ = function(id){ return document.getElementById(id); };
+  var shares = null;
+  function showShares(n){
+    shares = n;
+    var box = $('stats'), sEl = $('st-shares'), pEl = $('share-count');
+    if (sEl && n > 0){ sEl.textContent = fmt.format(n); sEl.nextSibling.textContent = n === 1 ? ' compartilhamento' : ' compartilhamentos'; box.hidden = false; }
+    if (pEl){ pEl.textContent = n === 0 ? 'Seja a primeira pessoa a compartilhar' : n === 1 ? 'Compartilhado 1 vez' : 'Compartilhado ' + fmt.format(n) + ' vezes'; pEl.hidden = false; }
+  }
+  function getJSON(url){ return fetch(url, {cache:'no-store'}).then(function(r){ if (r.status === 404) return {value:0}; if (!r.ok) throw 0; return r.json(); }); }
+
+  /* Compartilhamentos: lê o total; cada rede conta uma vez por visita */
+  getJSON(SHARE_URL + '/get/' + SHARE_KEY).then(function(j){ showShares(+j.value || 0); }).catch(function(){});
+  var done = {};
+  window.addEventListener('lf-share', function(ev){
+    var rede = (ev.detail && ev.detail.rede) || 'outro';
+    if (done[rede]) return; done[rede] = true;
+    if (shares !== null) showShares(shares + 1);   /* resposta imediata */
+    getJSON(SHARE_URL + '/hit/' + SHARE_KEY).then(function(j){ if (+j.value) showShares(+j.value); }).catch(function(){});
+  });
+
+  /* Visitas (GoatCounter) */
+  if (!GOATCOUNTER || GOATCOUNTER === 'SEU-CODIGO') return;
   var base = 'https://' + GOATCOUNTER + '.goatcounter.com';
   var s = document.createElement('script');
   s.async = true; s.src = 'https://gc.zgo.at/count.js';
   s.setAttribute('data-goatcounter', base + '/count');
   document.head.appendChild(s);
-
-  var fmt = new Intl.NumberFormat('pt-BR');
-  var box = document.getElementById('stats'), vEl = document.getElementById('st-visits'), sEl = document.getElementById('st-shares');
-  var shares = 0;
-  function get(path){
-    return fetch(base + '/counter/' + encodeURIComponent(path) + '.json')
-      .then(function(r){ return r.ok ? r.json() : {count:'0'}; })
-      .then(function(j){ return parseInt(String(j.count).replace(/\D/g,''),10) || 0; })
-      .catch(function(){ return null; });
-  }
-  Promise.all([get(location.pathname), get('compartilhar')]).then(function(r){
-    if (r[0] === null) return;            /* contador indisponível: não mostra nada */
-    vEl.textContent = fmt.format(r[0] + 1);  /* +1: esta visita ainda não entrou na contagem */
-    shares = r[1] || 0; sEl.textContent = fmt.format(shares);
-    box.hidden = false;
-  });
-  window.addEventListener('lf-share', function(){ if (!box.hidden){ shares++; sEl.textContent = fmt.format(shares); } });
+  fetch(base + '/counter/' + encodeURIComponent(location.pathname) + '.json')
+    .then(function(r){ return r.ok ? r.json() : {count:'0'}; })
+    .then(function(j){ $('st-visits').textContent = fmt.format((parseInt(String(j.count).replace(/\D/g,''),10) || 0) + 1); $('st-visits-box').hidden = false; $('stats').hidden = false; })
+    .catch(function(){});
 })();
 </script>
 <button type="button" class="share-fab" id="share-open" aria-haspopup="dialog" aria-expanded="false" aria-controls="share-panel">
@@ -603,7 +617,7 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
   <span>Compartilhar</span>
 </button>
 <div class="share-panel" id="share-panel" role="dialog" aria-modal="false" aria-labelledby="share-title" hidden>
-  <header><h2 id="share-title">Compartilhar o site</h2><button type="button" class="share-close" id="share-close" aria-label="Fechar">×</button></header>
+  <header><div><h2 id="share-title">Compartilhar o site</h2><p class="share-count" id="share-count" aria-live="polite" hidden></p></div><button type="button" class="share-close" id="share-close" aria-label="Fechar">×</button></header>
   <div>
     <h3>Link</h3>
     <div class="share-row"><input id="share-link" type="text" readonly aria-label="Link do site"><button type="button" class="share-btn" id="share-copy-link">Copiar link</button></div>
@@ -629,7 +643,7 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
   function track(rede){ try{
     if(window.goatcounter && goatcounter.count) goatcounter.count({path:'compartilhar', title:rede, event:true});
     if(typeof window.va === 'function') window.va('event', {name:'Compartilhar', data:{rede:rede}}); /* Vercel Analytics */
-    window.dispatchEvent(new CustomEvent('lf-share'));
+    window.dispatchEvent(new CustomEvent('lf-share',{detail:{rede:rede}}));
   }catch(_){} }
   var MSG = 'Lula × Flávio 2026: propostas, trajetórias e dados dos dois candidatos lado a lado, com fonte em cada informação.';
   var POST = 'Vai votar no 2º turno em 25/10?\n\nEste site compara Lula e Flávio Bolsonaro lado a lado: propostas, o que cada uma exige do Congresso, efeitos para trabalhadores e empresas, trajetória e indicadores. Cada informação tem a fonte.\n\nConfira e tire suas conclusões: ' + URL_SITE + '\n\n#Eleições2026 #SegundoTurno';

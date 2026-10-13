@@ -606,7 +606,7 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
 <div class="share-toast" id="share-toast" role="status" aria-live="polite" hidden></div>
 <script>
 (function(){
-  var ARTIFACT_URL = 'https://claude.ai/artifact/5rgXw8Sz9Jop8jCnTMS1Wu';
+  var ARTIFACT_URL = 'https://lulaxflavio2026.vercel.app/';
   /* Hospedado fora do claude.ai (GitHub Pages etc.): o link compartilhado é o endereço atual */
   var hosted = location.protocol === 'https:' && !/claude|anthropic|usercontent/.test(location.hostname);
   var URL_SITE = hosted ? location.origin + location.pathname : ARTIFACT_URL;
@@ -646,14 +646,27 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
     btn.innerHTML='<svg class="ok-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Copiado';
     clearTimeout(btn._t); btn._t=setTimeout(function(){btn.classList.remove('done');btn.textContent=btn.dataset.label},1800);
   }
-  function copy(el,okMsg,btn){
-    var v=el.value;
-    function fallback(){el.focus();el.select();say('Texto selecionado: use Ctrl+C ou "Copiar" para copiar')}
+  /* Copia texto: tenta a API moderna; se o navegador recusar, usa o método antigo (execCommand) */
+  function copyText(text, onOk, onFail){
+    function legacy(){
+      var ta=document.createElement('textarea'); ta.value=text; ta.setAttribute('readonly','');
+      ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,text.length);
+      var ok=false; try{ ok=document.execCommand('copy'); }catch(_){}
+      ta.remove(); ok ? onOk() : onFail();
+    }
     try{
-      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(function(){say(okMsg);flash(btn)},fallback)}
-      else fallback();
-    }catch(_){fallback()}
+      if(navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
+        navigator.clipboard.writeText(text).then(onOk, legacy);
+      } else legacy();
+    }catch(_){ legacy(); }
   }
+  function copy(el,okMsg,btn){
+    copyText(el.value, function(){ say(okMsg); flash(btn); }, function(){
+      el.focus(); el.select(); say('Selecionado: use Ctrl+C (ou ⌘+C) para copiar');
+    });
+  }
+
   function setOpen(o){panel.hidden=!o;openBtn.setAttribute('aria-expanded',o?'true':'false');if(o){$('share-copy-link').focus()}else{openBtn.focus()}}
   openBtn.addEventListener('click',function(){setOpen(panel.hidden)});
   $('share-close').addEventListener('click',function(){setOpen(false)});
@@ -666,10 +679,8 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
     var host=h.closest('[id]'); var id=host.id; var b=document.createElement('button');
     b.type='button'; b.className='anchor-copy'; b.innerHTML=ICON; b.setAttribute('aria-label','Copiar link para "'+h.textContent.trim()+'"');
     b.addEventListener('click',function(){
-      var url=URL_SITE+'#'+id, tmp=document.createElement('input'); tmp.value=url;
-      function ok(){say('Link deste tema copiado')}
-      function fb(){tmp.style.position='fixed';tmp.style.opacity='0';document.body.appendChild(tmp);tmp.select();try{document.execCommand('copy');ok()}catch(_){say(url)}tmp.remove()}
-      try{ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(ok,fb)} else fb() }catch(_){fb()}
+      var url=URL_SITE+'#'+id;
+      copyText(url,function(){say('Link deste tema copiado')},function(){say(url)});
       track('Link do tema');
     });
     h.appendChild(b);

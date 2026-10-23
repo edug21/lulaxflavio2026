@@ -646,8 +646,20 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
     if(typeof window.va === 'function') window.va('event', {name:'Compartilhar', data:{rede:rede}}); /* Vercel Analytics */
     window.dispatchEvent(new CustomEvent('lf-share',{detail:{rede:rede}}));
   }catch(_){} }
-  var MSG = 'Lula × Flávio 2026: propostas, trajetórias e dados dos dois candidatos lado a lado, com fonte em cada informação.';
-  var POST = 'Vai votar no 2º turno em 25/10?\n\nEste site compara Lula e Flávio Bolsonaro lado a lado: propostas, o que cada uma exige do Congresso, efeitos para trabalhadores e empresas, trajetória e indicadores. Cada informação tem a fonte.\n\nConfira e tire suas conclusões: ' + URL_SITE + '\n\n#Eleições2026 #SegundoTurno';
+  /* Texto de compartilhamento: muda sozinho conforme a data da votação (25/10/2026) */
+  var hoje = new Date(), dia = new Date(2026, 9, 25), faltam = Math.round((new Date(dia.getFullYear(),dia.getMonth(),dia.getDate()) - new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate()))/864e5);
+  var QUANDO = faltam > 1 ? 'Faltam ' + faltam + ' dias para o 2º turno (25/10)' : faltam === 1 ? 'O 2º turno é AMANHÃ (25/10)' : faltam === 0 ? 'Hoje é dia de votar no 2º turno' : 'O 2º turno foi em 25/10';
+  var MSG = QUANDO + '. Pesquisas mostram empate técnico entre Lula e Flávio Bolsonaro: cada voto conta. Compare os dois lado a lado antes de decidir, com fonte em cada informação.';
+  var POST = '🗳️ ' + QUANDO + ', e a disputa está empatada.\n\n' +
+    'As pesquisas mais recentes mostram Lula e Flávio Bolsonaro empatados tecnicamente. Ou seja: cada voto pode decidir.\n\n' +
+    'Antes de votar, vale comparar os dois lado a lado:\n' +
+    '✅ O que cada um propõe e o que depende do Congresso\n' +
+    '✅ Quem ganha e quem paga com cada proposta\n' +
+    '✅ Histórico, investigações e o que a Justiça decidiu\n' +
+    '✅ Um resumo de 1 minuto, em linguagem simples\n\n' +
+    'Tudo com fonte. O site não indica voto.\n\n' +
+    URL_SITE + '\n\n' +
+    'Repasse para quem ainda está em dúvida. #Eleições2026 #SegundoTurno';
   var $ = function(id){return document.getElementById(id)};
   var openBtn=$('share-open'), panel=$('share-panel'), toast=$('share-toast'), linkIn=$('share-link'), post=$('share-post');
   linkIn.value = URL_SITE;

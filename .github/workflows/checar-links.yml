@@ -12,9 +12,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verificar links
         id: lychee
+        # Planalto, FGV e arquivo da Câmara bloqueiam servidores fora do Brasil: ficam de fora para evitar falso alarme
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress --max-concurrency 4 --timeout 30 --accept 200,201,202,203,204,206,301,302,303,307,308,403,429 index.html
+          args: --no-progress --max-concurrency 4 --timeout 30 --accept 200,201,202,203,204,206,301,302,303,307,308,403,429 --exclude 'planalto\.gov\.br' --exclude 'atlas\.fgv\.br' --exclude 'arquivohistorico\.camara\.leg\.br' index.html
           fail: false
       - name: Abrir issue com links quebrados
         if: steps.lychee.outputs.exit_code != 0

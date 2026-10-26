@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="fonts.css"><style>
+html,body{margin:0;width:1200px;height:630px;background:#0f1312;color:#f3f5f2;font-family:'Public Sans',sans-serif;overflow:hidden}
+.faces{position:absolute;inset:0 0 150px 0;display:flex;gap:4px}
+.face{position:relative;flex:1;overflow:hidden}
+.face-l{background:#7b63d6}.face-f{background:#1f97b5}
+.face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.25) brightness(1.08);mix-blend-mode:luminosity;opacity:.95}
+.face-l img{object-position:42% 22%}.face-f img{object-position:58% 20%}
+.face::before{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(circle at center,rgba(0,0,0,.42) 0 1.1px,transparent 1.5px) 0 0/5px 5px;mix-blend-mode:multiply;opacity:.55}
+.face::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(15,19,18,0) 45%,rgba(15,19,18,.85) 100%)}
+.name{position:absolute;bottom:14px;z-index:2;font-family:'Archivo';font-stretch:62%;font-weight:900;font-size:150px;line-height:.8;text-transform:uppercase}
+.face-l .name{left:36px}.face-f .name{right:36px}
+.vs{position:absolute;left:50%;top:210px;transform:translate(-50%,-50%);z-index:3;width:92px;height:92px;border-radius:50%;background:#0f1312;display:grid;place-items:center;font-family:'Archivo';font-weight:800;font-size:46px;box-shadow:0 0 0 4px rgba(255,255,255,.25)}
+.band{position:absolute;left:0;right:0;bottom:0;height:150px;padding:0 40px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.band::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#7b63d6 0 50%,#1f97b5 50% 100%)}
+h1{margin:0;font-family:'Archivo';font-stretch:68%;font-weight:850;font-size:54px;line-height:1}
+p{margin:0;font-family:'IBM Plex Mono';font-size:21px;color:#a7b1ad;letter-spacing:.02em}
+.name em{display:block;font-style:normal;font-family:"Archivo";font-stretch:75%;font-weight:800;font-size:44px;line-height:1;margin-top:6px}.face-f .name{text-align:right}</style></head><body>
+<div class="faces"><div class="face face-l"><img src="../lula.jpg"><span class="name">Lula<em>51,79%</em></span></div><div class="face face-f"><img src="../flavio.jpg"><span class="name">Flávio<em>48,21%</em></span></div></div>
+<div class="vs">×</div>
+<div class="band"><h1>Lula reeleito com 51,79% dos votos válidos</h1><p>Resultado, propostas e histórico dos dois lado a lado · com fonte em cada informação</p></div>
+</body></html>

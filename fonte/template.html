@@ -487,6 +487,21 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
 .cell li:has(.res-num){padding-left:0}
 .cell li:has(.res-num)::before{display:none}
 
+
+/* Rodapé do autor */
+footer.site-foot{margin:0;padding-block:18px;border-top:1px solid rgba(255,255,255,.08);background:var(--hero-bg);color:var(--hero-muted);font-size:13px}
+.site-foot-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.sf-copy{margin:0}
+.sf-link{display:inline-flex;align-items:center;gap:8px;color:var(--hero-muted);text-decoration:none;padding:6px 8px;margin:-6px -8px;border-radius:6px;transition:color .2s,background-color .2s}
+.sf-link svg{width:13px;height:15px;flex:none}
+.sf-link:hover{color:var(--hero-fg);background:rgba(255,255,255,.06)}
+.sf-link:focus-visible{outline:2px solid var(--hero-lula);outline-offset:2px;color:var(--hero-fg)}
+/* botão de compartilhar sobe quando o rodapé aparece */
+.share-fab,.share-panel{transition:transform .25s ease, bottom .25s ease}
+body.foot-on .share-fab{bottom:calc(var(--foot-h,64px) + 12px + env(safe-area-inset-bottom,0px))}
+body.foot-on .share-panel{bottom:calc(var(--foot-h,64px) + 72px + env(safe-area-inset-bottom,0px))}
+@media (max-width:640px){.site-foot-in{flex-direction:column;align-items:flex-start}}
+
 /* Contadores (GoatCounter) */
 .hero-pills{display:inline-flex;flex-wrap:wrap;gap:8px;align-items:center}
 .stats{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.02em;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--hero-muted);display:inline-flex;gap:14px}
@@ -540,6 +555,12 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
 <!--BODY-->
 </main>
 <footer class="wrap">Conteúdo baseado no relatório "Relatório comparativo: governos, indicadores, propostas e trajetórias de Lula e Flávio Bolsonaro", com data de corte em 8/10/2026. A página descreve fatos e propostas; não indica voto nem atribui causalidade aos indicadores.</footer>
+<footer class="site-foot" id="site-foot">
+  <div class="wrap site-foot-in">
+    <p class="sf-copy">© 2026 Eduardo Gouvêa · Designed, built, and shipped with AI</p>
+    <a class="sf-link" href="https://www.eduardogouvea.com" target="_blank" rel="noopener"><svg viewBox="0 0 70 80" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0V57.142H58.3304V68.5681H11.6637V62.8551H0V80H70V39.372H58.3363V45.7159H11.6637V34.2898H69.9941V0H0ZM58.3304 22.858H11.6637V11.4319H58.3304V22.858Z"/></svg><span>eduardogouvea.com</span><span class="sr-only"> (abre em nova aba)</span></a>
+  </div>
+</footer>
 
 <script>
 /* ===== Contadores =====
@@ -759,5 +780,14 @@ nav.toc a.on{color:var(--paper);border-color:transparent;background:transparent}
   });
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -6% 0px',threshold:0.1});
   list.forEach(function(el){io.observe(el)});
+})();
+</script>
+<script>
+(function(){
+  var f=document.getElementById('site-foot'); if(!f||!('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function(es){ es.forEach(function(e){
+    document.body.style.setProperty('--foot-h', Math.round(e.intersectionRect.height)+'px');
+    document.body.classList.toggle('foot-on', e.isIntersecting);
+  }); }, {threshold:[0,.25,.5,.75,1]}).observe(f);
 })();
 </script>
